@@ -142,7 +142,7 @@ func main() {
 	})
 	router.POST("/v1/messages", handler)
 
-	log.InfoLog("starting server at 127.0.0.1:%d", port)
+	log.InfoLog("starting server at 0.0.0.0:%d", port)
 	err := router.Run(fmt.Sprintf("0.0.0.0:%d", port))
 	if err != nil {
 		log.ErrorLog("fail to run http server: %v", err)
