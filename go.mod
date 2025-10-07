@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/gin-gonic/gin v1.11.0
+	github.com/lincaiyong/arg v1.0.3
 	github.com/lincaiyong/log v1.0.1
 	github.com/lincaiyong/uniapi v1.0.1
 )

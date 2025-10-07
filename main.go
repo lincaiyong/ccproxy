@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/lincaiyong/arg"
 	"github.com/lincaiyong/log"
 	"github.com/lincaiyong/uniapi/service/monica"
 	"net/http"
 	"os"
 	"os/signal"
 	"regexp"
-	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -112,22 +112,16 @@ func handler(c *gin.Context) {
 }
 
 func main() {
-	port := 9123
-	if len(os.Args) > 1 {
-		var err error
-		port, err = strconv.Atoi(os.Args[1])
-		if err != nil {
-			port = 9124
-		}
-	}
-	logPath := "/tmp/ccproxy.log"
+	arg.Parse()
+	port := arg.KeyValueArg("port", "9123")
+	logPath := arg.KeyValueArg("logpath", "/tmp/ccproxy.log")
 	if err := log.SetLogPath(logPath); err != nil {
 		log.ErrorLog("fail to set log file path: %v", err)
 		os.Exit(1)
 	}
 	log.InfoLog("cmd line: %s", strings.Join(os.Args, " "))
 	log.InfoLog("log path: %v", logPath)
-	log.InfoLog("port: %d", port)
+	log.InfoLog("port: %s", port)
 	log.InfoLog("pid: %d", os.Getpid())
 	wd, _ := os.Getwd()
 	log.InfoLog("work dir: %s", wd)
@@ -150,8 +144,8 @@ func main() {
 	})
 	router.POST("/v1/messages", handler)
 
-	log.InfoLog("starting server at 0.0.0.0:%d", port)
-	err := router.Run(fmt.Sprintf("0.0.0.0:%d", port))
+	log.InfoLog("starting server at 0.0.0.0:%s", port)
+	err := router.Run(fmt.Sprintf("0.0.0.0:%s", port))
 	if err != nil {
 		log.ErrorLog("fail to run http server: %v", err)
 		os.Exit(1)
