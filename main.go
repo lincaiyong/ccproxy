@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -111,8 +112,15 @@ func handler(c *gin.Context) {
 	c.String(http.StatusOK, "ok")
 }
 
+//go:embed version
+var version string
+
 func main() {
 	arg.Parse()
+	if arg.BoolArg("version") {
+		fmt.Println(version)
+		return
+	}
 	port := arg.KeyValueArg("port", "9123")
 	logPath := arg.KeyValueArg("logpath", "/tmp/ccproxy.log")
 	if err := log.SetLogPath(logPath); err != nil {
