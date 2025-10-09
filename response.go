@@ -29,7 +29,9 @@ func (r *Response) IncIndex() {
 func (r *Response) Write(c *gin.Context, event *Event) {
 	event.Index = r.index
 	data := event.Data()
-	log.InfoLog("chunk: %s", data)
+	if event.Type == EventTypeContentBlockDelta && event.Tool != "" {
+		log.InfoLog("chunk: %s", data)
+	}
 	_, err := c.Writer.Write([]byte(data))
 	if err != nil {
 		panic(err)
