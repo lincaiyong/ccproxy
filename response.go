@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/lincaiyong/log"
 	"math/rand"
 	"strings"
 	"time"
@@ -28,7 +29,7 @@ func (r *Response) IncIndex() {
 func (r *Response) Write(c *gin.Context, event *Event) {
 	event.Index = r.index
 	data := event.Data()
-	//log.InfoLog("chunk: %s", data)
+	log.InfoLog("chunk: %s", data)
 	_, err := c.Writer.Write([]byte(data))
 	if err != nil {
 		panic(err)

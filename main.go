@@ -90,6 +90,7 @@ func handler(c *gin.Context) {
 	log.InfoLog("resp: %s", answer)
 
 	tools := extractToolUse(answer)
+	log.InfoLog("tools count: %d", len(tools))
 	for _, tool := range tools {
 		resp.IncIndex()
 		name, args := tool[0], tool[1]
